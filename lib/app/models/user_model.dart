@@ -12,15 +12,6 @@ class UserModel {
     required this.email,
     required this.password,
   });
-  factory UserModel.fromRawJson(String str) =>
-      UserModel.fromMap(json.decode(str));
-
-  factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-        id: json['id'],
-        name: json['name'],
-        email: json['email'],
-        password: json['password'],
-      );
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,4 +21,18 @@ class UserModel {
       'password': password,
     };
   }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id']?.toInt() ?? 0,
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      password: map['password'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source));
 }

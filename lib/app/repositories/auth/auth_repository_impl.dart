@@ -9,9 +9,8 @@ import './auth_repository.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final RestClient _restClient;
 
-  AuthRepositoryImpl({
-    required RestClient restClient,
-  }) : _restClient = restClient;
+  AuthRepositoryImpl({required RestClient restClient})
+      : _restClient = restClient;
 
   @override
   Future<UserModel> register(String name, String email, String password) async {
@@ -22,15 +21,17 @@ class AuthRepositoryImpl implements AuthRepository {
     });
 
     if (result.hasError) {
-      var message = 'Erro ao Registrar Usuario';
+      var message = 'Erro ao registrar usuário';
       if (result.statusCode == 400) {
         message = result.body['error'];
       }
+
       log(
         message,
         error: result.statusText,
         stackTrace: StackTrace.current,
       );
+
       throw RestClientException(message);
     }
     return login(email, password);
@@ -45,19 +46,21 @@ class AuthRepositoryImpl implements AuthRepository {
     if (result.hasError) {
       if (result.statusCode == 403) {
         log(
-          'usuario ou senha inválidos',
+          'Usuário ou senha inválidos',
           error: result.statusText,
           stackTrace: StackTrace.current,
         );
         throw UserNotFoundException();
       }
+
       log(
-        'erro ao auntenticar o usuário (${result.statusCode})',
+        'Erro ao autenticar o usuário (${result.statusCode})',
         error: result.statusText,
         stackTrace: StackTrace.current,
       );
-      throw RestClientException('Erro ao auntenticar usuário');
+      throw RestClientException('Erro ao autenticar usuário');
     }
+
     return UserModel.fromMap(result.body);
   }
 }
