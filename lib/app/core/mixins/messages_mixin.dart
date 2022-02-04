@@ -39,7 +39,7 @@ extension MessageTypeColorExt on MessageType {
       case MessageType.error:
         return Colors.red[800]!;
       case MessageType.info:
-        return Colors.blue[200]!;
+        return Colors.blue[250]!;
     }
   }
 
